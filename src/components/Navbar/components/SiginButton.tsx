@@ -1,11 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export const SigninButton = () => {
-  const [session, setSession] = useState({ user: true });
-
-  const signOut = () => setSession({ user: false });
-  const signIn = () => setSession({ user: true });
+  const { data: session } = useSession();
 
   if (session && session.user) {
     return (
