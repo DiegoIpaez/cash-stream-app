@@ -1,7 +1,10 @@
-export interface User {
+export interface UserSession {
   id?: string;
   name: string;
   email: string;
+}
+
+export interface User extends UserSession {
   password: string;
 }
 
