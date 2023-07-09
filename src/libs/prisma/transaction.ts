@@ -1,6 +1,20 @@
 import prisma from "./client";
 import { Transaction } from "@/interfaces";
-import ObjectID from "bson-objectid";
+
+const DEFAULT_TOTAL = {
+  totalAmount: 0,
+};
+
+const getTotalDataByTransactionType = (data: Array<any>) => {
+  const incomeData = data.find((item: any) => item._id === "INCOME") ?? DEFAULT_TOTAL;
+  const dischargeData = data.find((item: any) => item._id === "DISCHARGE") ?? DEFAULT_TOTAL;
+
+  return {
+    totalIncome: incomeData.totalAmount,
+    totalDischarge: dischargeData.totalAmount,
+    totalAmount: incomeData.totalAmount + dischargeData.totalAmount,
+  };
+};
 
 export const getAllTransactionByUser = async (userId: string) => {
   const transactions = await prisma.transactions.findMany({
@@ -9,7 +23,7 @@ export const getAllTransactionByUser = async (userId: string) => {
 
   const totalByTransactionType: any = await prisma.transactions.aggregateRaw({
     pipeline: [
-      { $match: { userId: new ObjectID(userId).str } },
+      { $match: { userId: { $oid: userId }, deleted: false } },
       {
         $group: {
           _id: "$type",
@@ -32,9 +46,9 @@ export const getAllTransactionByUser = async (userId: string) => {
     ],
   });
 
-  const [income, discharge] = totalByTransactionType;
-  const totalAmount = income.totalAmount + discharge.totalAmount;
-  return { transactions, totalByTransactionType, totalAmount };
+  const totalData = getTotalDataByTransactionType(totalByTransactionType);
+
+  return { transactions, ...totalData };
 };
 
 export const createTransaction = async (data: Transaction) => {

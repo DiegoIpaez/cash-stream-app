@@ -29,9 +29,6 @@ dependencies:
   bcryptjs:
     specifier: ^2.4.3
     version: 2.4.3
-  bson-objectid:
-    specifier: ^2.0.4
-    version: 2.0.4
   eslint:
     specifier: 8.44.0
     version: 8.44.0
@@ -637,10 +634,6 @@ packages:
       electron-to-chromium: 1.4.450
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
-    dev: false
-
-  /bson-objectid@2.0.4:
-    resolution: {integrity: sha512-vgnKAUzcDoa+AeyYwXCoHyF2q6u/8H46dxu5JN+4/TZeq/Dlinn0K6GvxsCLb3LHUJl0m/TLiEK31kUwtgocMQ==}
     dev: false
 
   /buffer-equal-constant-time@1.0.1:
